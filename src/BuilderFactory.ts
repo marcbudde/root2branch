@@ -1,22 +1,34 @@
-import { DynaTreeBuilder} from "./DynaTreeBuilder";
-import { TreeBuilder } from "./TreeBuilder";
-import { EmptyDynaTreeBuilder} from "./EmptyDynaTreeBuilder";
-import { ITreeBuilder} from "./ITreeBuilder";
-import { IDynaTreeBuilder} from "./IDynaTreeBuilder";
+import { FirstOrderMultiplyingBuilderImpl } from "./FirstOrderMultiplyingBuilderImpl";
+import { LinearBuilderImpl } from "./LinearBuilderImpl";
+import { EmptyFirstOrderMultiplyingBuilderImpl } from "./EmptyFirstOrderMultiplyingBuilderImpl";
+import { LinearBuilder } from "./LinearBuilder";
+import { FirstOrderMultiplyingBuilder } from "./FirstOrderMultiplyingBuilder";
+import { HigherOrderMultiplyingBuilderImpl } from "./HigherOrderMultiplyingBuilderImpl";
+import { HigherOrderMultiplyingBuilder } from "./HigherOrderMultiplyingBuilder";
 
 export class BuilderFactory {
-  public static seed <P> (payload: P): ITreeBuilder<P> {
-    return new TreeBuilder<P>(null).hookIn(payload);
+  public static seed <P> (payload: P): LinearBuilder<P> {
+    return new LinearBuilderImpl<P>(null).hookIn(payload);
   }
 
-  public static createDynaTreeBuilder<T, P>(builderToWrap: ITreeBuilder<P>,
+  static createFirstOrderMultiplyingBuilder<T, P>(
+      builderToWrap: LinearBuilder<P>,
       dataList: () => Array<T>,
-      mapper: (data: T) => P): IDynaTreeBuilder<T, P> {
-    return new DynaTreeBuilder<T, P>(builderToWrap, dataList, mapper)
+      mapper: (data: T) => P): FirstOrderMultiplyingBuilder<T, P> {
+    return new FirstOrderMultiplyingBuilderImpl<T, P>(builderToWrap,
+        dataList, mapper)
   }
 
-  public static createEmptyDynaTreeBuilder<T, P>(builderToWrap: ITreeBuilder<P>)
-      : IDynaTreeBuilder<T, P> {
-    return new EmptyDynaTreeBuilder<T, P>(builderToWrap);
+  static createEmptyFirstOrderMultiplyingBuilder<T, P>(
+      builderToWrap: LinearBuilder<P>) : FirstOrderMultiplyingBuilder<T, P> {
+    return new EmptyFirstOrderMultiplyingBuilderImpl<T, P>(builderToWrap);
+  }
+
+  static createHigherOrderMultiplyingBuilder<T, U, P>(
+      parentBuilder: FirstOrderMultiplyingBuilder<T, P>,
+      selection: (parentDataItem: T) => Array<U>,
+      mapper: (data: U) => P): HigherOrderMultiplyingBuilder<T, U, P> {
+    return new HigherOrderMultiplyingBuilderImpl<T, U, P>(parentBuilder,
+        selection, mapper)
   }
 }
