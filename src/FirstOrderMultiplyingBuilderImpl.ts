@@ -23,7 +23,7 @@ export class FirstOrderMultiplyingBuilderImpl<T, P> implements FirstOrderMultipl
     }
   }
 
-  public branch(payload: P): HigherOrderMultiplyingBuilder<T, T, P> {
+  public branch(payload: P): HigherOrderMultiplyingBuilder<FirstOrderMultiplyingBuilder<T, P>, T, T, P> {
     return BuilderFactory.createHigherOrderMultiplyingBuilder(this,
       () => [null], (p) => payload);
   }
@@ -33,13 +33,13 @@ export class FirstOrderMultiplyingBuilderImpl<T, P> implements FirstOrderMultipl
   }
 
   public multibranch<U>(dataList: () => U[], boxInto: (data: U) => P):
-      HigherOrderMultiplyingBuilder<T, U, P> {
+      HigherOrderMultiplyingBuilder<FirstOrderMultiplyingBuilder<T, P>, T, U, P> {
     return BuilderFactory.createHigherOrderMultiplyingBuilder(this,
       (t) => dataList(), boxInto);
   }
 
   public multibranchOnSelection<U>(selection: (parentListItem: T) => U[], boxInto: (data: U) => P):
-      HigherOrderMultiplyingBuilder<T, U, P> {
+      HigherOrderMultiplyingBuilder<FirstOrderMultiplyingBuilder<T, P>, T, U, P> {
     return BuilderFactory.createHigherOrderMultiplyingBuilder(this,
       selection, boxInto);
   }

@@ -5,6 +5,7 @@ import { LinearBuilder } from "./LinearBuilder";
 import { FirstOrderMultiplyingBuilder } from "./FirstOrderMultiplyingBuilder";
 import { HigherOrderMultiplyingBuilderImpl } from "./HigherOrderMultiplyingBuilderImpl";
 import { HigherOrderMultiplyingBuilder } from "./HigherOrderMultiplyingBuilder";
+import { MultiplyingBuilder } from "./MultiplyingBuilder";
 
 export class BuilderFactory {
   public static seed <P> (payload: P): LinearBuilder<P> {
@@ -24,11 +25,11 @@ export class BuilderFactory {
     return new EmptyFirstOrderMultiplyingBuilderImpl<T, P>(builderToWrap);
   }
 
-  static createHigherOrderMultiplyingBuilder<T, U, P>(
-      parentBuilder: FirstOrderMultiplyingBuilder<T, P>,
+  static createHigherOrderMultiplyingBuilder<B extends MultiplyingBuilder<T, P>, T, U, P>(
+      parentBuilder: B,
       selection: (parentDataItem: T) => Array<U>,
-      mapper: (data: U) => P): HigherOrderMultiplyingBuilder<T, U, P> {
-    return new HigherOrderMultiplyingBuilderImpl<T, U, P>(parentBuilder,
+      mapper: (data: U) => P): HigherOrderMultiplyingBuilder<B, T, U, P> {
+    return new HigherOrderMultiplyingBuilderImpl<B, T, U, P>(parentBuilder,
         selection, mapper)
   }
 }

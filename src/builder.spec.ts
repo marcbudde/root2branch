@@ -209,3 +209,142 @@ describe('multibranch operation twice in a row', () => {
     expect(builder.node.children[1].children[1].data).to.equal('9');
   });
 });
+
+describe('multibranch operation twice in a row with subsequent' +
+  ' branch, close and leaf', () => {
+  it('should yield nodes with payload on 2nd level for each dataList element' +
+   ' and n child nodes on 3rd level for each node on 2nd level' +
+   ' and two child nodes on 4th level for each node on 3rd level',
+  () => {
+    let list: Array<number> = [1, 5];
+    let sublists : { [key:number]:Array<number> } = {
+      [1]: [6, 7],
+      [5]: [8, 9]};
+
+    let builder : LinearBuilder<string> =
+    BuilderFactory.seed("root data")
+      .multibranch(() => list, (t) => t.toString())
+        .multibranchOnSelection((t) => sublists[t], (u) => u.toString())
+          .branch('4th level leaf 1').close()
+          .leaf('4th level leaf 2')
+        .close()
+      .close();
+
+
+    expect(builder.node.children.length).to.equal(2);
+
+    expect(builder.node.children[0].data).to.equal('1');
+    expect(builder.node.children[0].children.length).to.equal(2);
+    expect(builder.node.children[0].children[0].data).to.equal('6');
+    expect(builder.node.children[0].children[1].data).to.equal('7');
+    expect(builder.node.children[0].children[0].children[0].data).to.equal('4th level leaf 1');
+    expect(builder.node.children[0].children[0].children[1].data).to.equal('4th level leaf 2');
+    expect(builder.node.children[0].children[1].children[0].data).to.equal('4th level leaf 1');
+    expect(builder.node.children[0].children[1].children[1].data).to.equal('4th level leaf 2');
+
+    expect(builder.node.children[1].data).to.equal('5');
+    expect(builder.node.children[1].children.length).to.equal(2);
+    expect(builder.node.children[1].children[0].data).to.equal('8');
+    expect(builder.node.children[1].children[1].data).to.equal('9');
+    expect(builder.node.children[1].children[0].children[0].data).to.equal('4th level leaf 1');
+    expect(builder.node.children[1].children[0].children[1].data).to.equal('4th level leaf 2');
+    expect(builder.node.children[1].children[1].children[0].data).to.equal('4th level leaf 1');
+    expect(builder.node.children[1].children[1].children[1].data).to.equal('4th level leaf 2');
+  });
+});
+
+describe('multibranch operation three times in a row', () => {
+  it('should yield nodes with payload on 2nd level for each dataList element' +
+   ' and n child nodes on 3rd level for each node on 2nd level' +
+   ' and m child nodes on 4th level for each node on 3rd level',
+  () => {
+    let list: Array<number> = [1, 5];
+    let sublists : { [key:number]:Array<number> } = {
+      [1]: [6, 7],
+      [5]: [8, 9]};
+    let subsublist : Array<string>  = ['a', 'b'];
+
+    let builder : LinearBuilder<string> =
+    BuilderFactory.seed("root data")
+      .multibranch(() => list, (t) => t.toString())
+        .multibranchOnSelection((t) => sublists[t], (u) => u.toString())
+          .multibranch(() => subsublist, (v) => v)
+          .close()
+        .close()
+      .close();
+
+    expect(builder.node.children.length).to.equal(2);
+
+    expect(builder.node.children[0].data).to.equal('1');
+    expect(builder.node.children[0].children.length).to.equal(2);
+    expect(builder.node.children[0].children[0].data).to.equal('6');
+    expect(builder.node.children[0].children[1].data).to.equal('7');
+    expect(builder.node.children[0].children[0].children.length).to.equal(2);
+    expect(builder.node.children[0].children[1].children.length).to.equal(2);
+    expect(builder.node.children[0].children[0].children[0].data).to.equal('a');
+    expect(builder.node.children[0].children[0].children[1].data).to.equal('b');
+    expect(builder.node.children[0].children[1].children[0].data).to.equal('a');
+    expect(builder.node.children[0].children[1].children[1].data).to.equal('b');
+
+    expect(builder.node.children[1].data).to.equal('5');
+    expect(builder.node.children[1].children.length).to.equal(2);
+    expect(builder.node.children[1].children[0].data).to.equal('8');
+    expect(builder.node.children[1].children[1].data).to.equal('9');
+    expect(builder.node.children[1].children[0].children.length).to.equal(2);
+    expect(builder.node.children[1].children[1].children.length).to.equal(2);
+    expect(builder.node.children[1].children[0].children[0].data).to.equal('a');
+    expect(builder.node.children[1].children[0].children[1].data).to.equal('b');
+    expect(builder.node.children[1].children[1].children[0].data).to.equal('a');
+    expect(builder.node.children[1].children[1].children[1].data).to.equal('b');
+  });
+});
+
+describe('multibranch operation three times in a row', () => {
+  it('should yield nodes with payload on 2nd level for each dataList element' +
+   ' and n child nodes on 3rd level for each node on 2nd level' +
+   ' and m child nodes on 4th level for each node on 3rd level',
+  () => {
+    let list: Array<number> = [1, 5];
+    let sublists : { [key:number]:Array<number> } = {
+      [1]: [6, 7],
+      [5]: [8, 9]};
+    let subsublists : { [key:number]:Array<string> } = {
+      [6]: ['a', 'b'],
+      [7]: ['c', 'd'],
+      [8]: ['e', 'f'],
+      [9]: ['g', 'h']};
+
+    let builder : LinearBuilder<string> =
+    BuilderFactory.seed("root data")
+      .multibranch(() => list, (t) => t.toString())
+        .multibranchOnSelection((t) => sublists[t], (u) => u.toString())
+          .multibranchOnSelection((u) => subsublists[u], (v) => v)
+          .close()
+        .close()
+      .close();
+
+    expect(builder.node.children.length).to.equal(2);
+
+    expect(builder.node.children[0].data).to.equal('1');
+    expect(builder.node.children[0].children.length).to.equal(2);
+    expect(builder.node.children[0].children[0].data).to.equal('6');
+    expect(builder.node.children[0].children[1].data).to.equal('7');
+    expect(builder.node.children[0].children[0].children.length).to.equal(2);
+    expect(builder.node.children[0].children[1].children.length).to.equal(2);
+    expect(builder.node.children[0].children[0].children[0].data).to.equal('a');
+    expect(builder.node.children[0].children[0].children[1].data).to.equal('b');
+    expect(builder.node.children[0].children[1].children[0].data).to.equal('c');
+    expect(builder.node.children[0].children[1].children[1].data).to.equal('d');
+
+    expect(builder.node.children[1].data).to.equal('5');
+    expect(builder.node.children[1].children.length).to.equal(2);
+    expect(builder.node.children[1].children[0].data).to.equal('8');
+    expect(builder.node.children[1].children[1].data).to.equal('9');
+    expect(builder.node.children[1].children[0].children.length).to.equal(2);
+    expect(builder.node.children[1].children[1].children.length).to.equal(2);
+    expect(builder.node.children[1].children[0].children[0].data).to.equal('e');
+    expect(builder.node.children[1].children[0].children[1].data).to.equal('f');
+    expect(builder.node.children[1].children[1].children[0].data).to.equal('g');
+    expect(builder.node.children[1].children[1].children[1].data).to.equal('h');
+  });
+});

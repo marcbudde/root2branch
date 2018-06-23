@@ -4,14 +4,15 @@ import { FirstOrderMultiplyingBuilder } from "./FirstOrderMultiplyingBuilder";
 import { HigherOrderMultiplyingBuilder } from "./HigherOrderMultiplyingBuilder";
 import { LinearBuilderImpl } from "./LinearBuilderImpl";
 import { MultiplyingBuilder } from "./MultiplyingBuilder";
+import { BuilderFactory } from "./BuilderFactory";
 
-export class HigherOrderMultiplyingBuilderImpl<T, U, P>
-    implements HigherOrderMultiplyingBuilder<T, U, P> {
+export class HigherOrderMultiplyingBuilderImpl<B extends MultiplyingBuilder<T, P>, T, U, P>
+    implements HigherOrderMultiplyingBuilder<B, T, U, P> {
   // Tupel aus [data object, from wich second element's payload has been derived;
   // builder with payload derived from first element])
   private siblings: Array<[U, LinearBuilder<P>]> = [];
 
-  constructor(readonly parentBuilder: FirstOrderMultiplyingBuilder<T, P>,
+  constructor(readonly parentBuilder: B,
       dataList: (parentDataItem: T) => Array<U>, mapper: (data: U) => P) {
     for(let linearParentSibling of parentBuilder.linearParentSiblings()) {
       if(dataList) {
@@ -23,25 +24,32 @@ export class HigherOrderMultiplyingBuilderImpl<T, U, P>
     }
   }
 
-  public branch(payload: P): HigherOrderMultiplyingBuilder<U, U, P> {
-    throw new Error("Method not implemented.");
+  public branch(payload: P): HigherOrderMultiplyingBuilder<HigherOrderMultiplyingBuilder<B, T, U, P>, U, U, P> {
+    return BuilderFactory.createHigherOrderMultiplyingBuilder(this,
+      () => [null], (p) => payload);
   }
 
-  public leaf(payload: P): MultiplyingBuilder<U, P> {
-    throw new Error("Method not implemented.");
+  public leaf(payload: P): HigherOrderMultiplyingBuilder<B, T, U, P> {
+    return this.branch(payload).close();
   }
 
   public multibranch<V>(dataList: () => V[],
-      boxInto: (data: V) => P): HigherOrderMultiplyingBuilder<U, V, P> {
-    throw new Error("Method not implemented.");
+      boxInto: (data: V) => P): HigherOrderMultiplyingBuilder<HigherOrderMultiplyingBuilder<B, T, U, P>, U, V, P> {
+    return BuilderFactory.createHigherOrderMultiplyingBuilder(this,
+      (t) => dataList(), boxInto);
   }
 
-  public multibranchOnSelection<V>(dataList: (parentListItem: U) => V[],
-      boxInto: (data: V) => P): HigherOrderMultiplyingBuilder<U, V, P> {
-    throw new Error("Method not implemented.");
+  public multibranchOnSelection<V>(selection: (parentListItem: U) => V[],
+      boxInto: (data: V) => P): HigherOrderMultiplyingBuilder<HigherOrderMultiplyingBuilder<B, T, U, P>, U, V, P> {
+    return BuilderFactory.createHigherOrderMultiplyingBuilder(this,
+      selection, boxInto);
   }
 
-  public close(): FirstOrderMultiplyingBuilder<T, P> {
+  public close(): B {
     return this.parentBuilder;
+  }
+
+  linearParentSiblings(): Array<[U, LinearBuilder<P>]> {
+    return this.siblings;
   }
 }
