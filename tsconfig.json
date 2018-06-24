@@ -1,14 +1,16 @@
 {
     "compilerOptions": {
         "module": "commonjs",
-        "moduleResolution": "node",
         "noImplicitAny": true,
         "removeComments": true,
         "preserveConstEnums": true,
-        "outFile": "../../built/local/tsc.js",
-        "sourceMap": true
+        "sourceMap": true,
+        "declaration": true,
+        "rootDir": ".",
+        "outDir": "./dist"
     },
     "include": [
+        "index.ts",
         "src/**/*"
     ],
     "exclude": [

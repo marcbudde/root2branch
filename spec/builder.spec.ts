@@ -1,5 +1,5 @@
-import { BuilderFactory } from "./BuilderFactory"
-import { LinearBuilder } from "./LinearBuilder";
+import { BuilderFactory } from "../src/BuilderFactory"
+import { LinearBuilder } from "../src/LinearBuilder";
 import { expect } from 'chai';
 import 'mocha';
 

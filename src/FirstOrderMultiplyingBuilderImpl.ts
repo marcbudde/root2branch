@@ -14,8 +14,8 @@ export class FirstOrderMultiplyingBuilderImpl<T, P> implements FirstOrderMultipl
   private siblings: Array<[T, LinearBuilder<P>]> = [];
 
   constructor(readonly parentBuilder: LinearBuilder<P>,
-      dataList: () => Array<T>, mapper: (data: T) => P) {
-    if(dataList) {
+      dataList?: () => Array<T>, mapper?: (data: T) => P) {
+    if(dataList && mapper) {
       for(let item of dataList()) {
         this.siblings.push([item,
           new LinearBuilderImpl<P>(parentBuilder).hookIn(mapper(item))]);
@@ -25,7 +25,7 @@ export class FirstOrderMultiplyingBuilderImpl<T, P> implements FirstOrderMultipl
 
   public branch(payload: P): HigherOrderMultiplyingBuilder<FirstOrderMultiplyingBuilder<T, P>, T, T, P> {
     return BuilderFactory.createHigherOrderMultiplyingBuilder(this,
-      () => [null], (p) => payload);
+      () => [<T>{}], (p) => payload);
   }
 
   public leaf(payload: P): FirstOrderMultiplyingBuilder<T, P> {

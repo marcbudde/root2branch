@@ -9,7 +9,7 @@ import { MultiplyingBuilder } from "./MultiplyingBuilder";
 
 export class BuilderFactory {
   public static seed <P> (payload: P): LinearBuilder<P> {
-    return new LinearBuilderImpl<P>(null).hookIn(payload);
+    return new LinearBuilderImpl<P>(undefined).hookIn(payload);
   }
 
   static createFirstOrderMultiplyingBuilder<T, P>(

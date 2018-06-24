@@ -5,6 +5,6 @@ import { FirstOrderMultiplyingBuilderImpl } from "./FirstOrderMultiplyingBuilder
 export class EmptyFirstOrderMultiplyingBuilderImpl<T, P>
     extends FirstOrderMultiplyingBuilderImpl<T, P> implements FirstOrderMultiplyingBuilder<T, P> {
   constructor(readonly parentBuilder: LinearBuilder<P>) {
-    super(parentBuilder, null, null);
+    super(parentBuilder, undefined, undefined);
   }
 }

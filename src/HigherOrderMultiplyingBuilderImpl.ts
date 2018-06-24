@@ -15,18 +15,16 @@ export class HigherOrderMultiplyingBuilderImpl<B extends MultiplyingBuilder<T, P
   constructor(readonly parentBuilder: B,
       dataList: (parentDataItem: T) => Array<U>, mapper: (data: U) => P) {
     for(let linearParentSibling of parentBuilder.linearParentSiblings()) {
-      if(dataList) {
-        for(let item of dataList(linearParentSibling[0])) {
-          this.siblings.push([item,
-            new LinearBuilderImpl<P>(linearParentSibling[1]).hookIn(mapper(item))]);
-        }
+      for(let item of dataList(linearParentSibling[0])) {
+        this.siblings.push([item,
+          new LinearBuilderImpl<P>(linearParentSibling[1]).hookIn(mapper(item))]);
       }
     }
   }
 
   public branch(payload: P): HigherOrderMultiplyingBuilder<HigherOrderMultiplyingBuilder<B, T, U, P>, U, U, P> {
     return BuilderFactory.createHigherOrderMultiplyingBuilder(this,
-      () => [null], (p) => payload);
+      () => [<U>{}], (p) => payload);
   }
 
   public leaf(payload: P): HigherOrderMultiplyingBuilder<B, T, U, P> {

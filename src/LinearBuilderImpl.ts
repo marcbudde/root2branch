@@ -6,16 +6,17 @@ import { BuilderFactory } from "./BuilderFactory";
   P represents the data type of payload objects
 */
 export class LinearBuilderImpl<P> implements LinearBuilder<P> {
-  node: TreeNode<P>;
+  node?: TreeNode<P>;
 
-  constructor(readonly parentBuilder: LinearBuilder<P>) {}
+  constructor(readonly parentBuilder?: LinearBuilder<P>) {}
 
   /*
     Hooks in a new node with given payload in the place of this builder.
   */
   hookIn(payload: P): LinearBuilder<P> {
     this.node = new TreeNode(payload);
-    if(this.parentBuilder != null) {
+    if(this.parentBuilder && this.parentBuilder.node &&
+        this.parentBuilder.node.children) {
       this.node.parent = this.parentBuilder.node;
       this.parentBuilder.node.children.push(this.node);
     }

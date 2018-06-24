@@ -1,16 +1,19 @@
 {
   "name": "@maabu/root2branch",
-  "version": "0.0.1",
+  "version": "0.0.6",
   "description": "A small library providing a fluent api for constructing tree models over arbitrary in memory data structures",
+  "main": "dist/src/",
+  "types": "dist/index.d.ts",
   "keywords": [
     "dsl",
     "dynamic tree",
     "data structures"
   ],
-  "author": "Marc Budde <marc.budde@mail.de>",
+  "author": "Marc Budde <maabu@arcor.de>",
   "license": "GNU GPLv3",
   "scripts": {
-    "test": "mocha -r ts-node/register src/**/*.spec.ts"
+    "build": "tsc",
+    "test": "mocha -r ts-node/register spec/**/*.spec.ts"
   },
   "devDependencies": {
     "@types/chai": "^4.1.3",
