@@ -1,5 +1,5 @@
 {
-  "name": "root2branch",
+  "name": "@maabu/root2branch",
   "version": "0.0.1",
   "description": "A small library providing a fluent api for constructing tree models over arbitrary in memory data structures",
   "keywords": [
