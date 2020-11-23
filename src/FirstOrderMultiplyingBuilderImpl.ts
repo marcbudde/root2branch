@@ -1,4 +1,3 @@
-import { TreeNode } from "./TreeNode";
 import { LinearBuilder } from "./LinearBuilder";
 import { FirstOrderMultiplyingBuilder } from "./FirstOrderMultiplyingBuilder";
 import { HigherOrderMultiplyingBuilder } from "./HigherOrderMultiplyingBuilder";

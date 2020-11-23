@@ -1,4 +1,3 @@
-import { FirstOrderMultiplyingBuilder } from "./FirstOrderMultiplyingBuilder";
 import { HigherOrderMultiplyingBuilder } from "./HigherOrderMultiplyingBuilder";
 import { LinearBuilder } from "./LinearBuilder";
 

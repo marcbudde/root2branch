@@ -1,6 +1,6 @@
 {
   "name": "@maabu/root2branch",
-  "version": "0.0.9",
+  "version": "0.0.10",
   "description": "A small library providing a fluent api for constructing tree models over arbitrary in memory data structures",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -16,10 +16,10 @@
     "test": "mocha -r ts-node/register spec/**/*.spec.ts"
   },
   "devDependencies": {
-    "@types/chai": "^4.1.3",
-    "@types/mocha": "^5.2.0",
-    "chai": "^4.1.2",
-    "mocha": "^5.1.1",
-    "ts-node": "^6.0.3"
+    "@types/chai": "^4.2.14",
+    "@types/mocha": "^8.0.4",
+    "chai": "^4.2.0",
+    "mocha": "^8.2.1",
+    "ts-node": "^9.0.0"
   }
 }

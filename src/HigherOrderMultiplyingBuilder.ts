@@ -1,5 +1,4 @@
 import {MultiplyingBuilder} from "./MultiplyingBuilder";
-import {FirstOrderMultiplyingBuilder} from './FirstOrderMultiplyingBuilder';
 
 export interface HigherOrderMultiplyingBuilder<B extends MultiplyingBuilder<T, P>, T, U, P> extends MultiplyingBuilder<U, P> {
   branch(payload: P): HigherOrderMultiplyingBuilder<HigherOrderMultiplyingBuilder<B, T, U, P>, U, U, P>;

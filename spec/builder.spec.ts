@@ -75,13 +75,13 @@ describe('branch operation twice (no close in between) on root builder', () => {
   it('should yield nodes with payload on 2nd and 3rd level', () => {
     let builder : LinearBuilder<string> =
     BuilderFactory.seed("root data")
-      .branch("leaf1 data")
-        .branch("leaf2 data");
+      .branch("node1 data")
+        .branch("node2 data");
     expect(builder.node.children.length).to.equal(0);
-    expect(builder.node.data).to.equal('leaf2 data');
+    expect(builder.node.data).to.equal('node2 data');
     builder = builder.close();
     expect(builder.node.children.length).to.equal(1);
-    expect(builder.node.data).to.equal('leaf1 data');
+    expect(builder.node.data).to.equal('node1 data');
     builder = builder.close();
     expect(builder.node.children.length).to.equal(1);
     expect(builder.node.data).to.equal('root data');

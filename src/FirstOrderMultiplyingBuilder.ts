@@ -1,6 +1,5 @@
 import { ToLinearBuilderCloseable } from "./ToLinearBuilderCloseable";
 import { MultiplyingBuilder } from "./MultiplyingBuilder";
-import { LinearBuilder } from "./LinearBuilder";
 import { HigherOrderMultiplyingBuilder } from "./HigherOrderMultiplyingBuilder";
 
 export interface FirstOrderMultiplyingBuilder<T, P> extends MultiplyingBuilder<T, P>, ToLinearBuilderCloseable<P> {
